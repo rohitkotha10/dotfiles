@@ -5,6 +5,8 @@ if uwsm check may-start; then
     exec uwsm start hyprland.desktop
 fi
 
+source <(fzf --zsh) # for fuzzy search and cool tools. install fzf first
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
