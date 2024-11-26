@@ -1,13 +1,13 @@
 * {
     border: none;
-    border-radius: 10px;
     font-family: Liberation Mono;
 }
 
 window#waybar {
-    background: transparent;
+    background-color: rgba(0,0,0,0.2);
+    border-bottom: 0px solid #ffffff;
     padding: 0;
-    margin: 0;
+    margin-top: 0;
 }
 
 #workspaces {
@@ -22,8 +22,8 @@ window#waybar {
     padding: 5px;
 }
 
-#workspaces button.persistent {
-    color: #bca5d1;
+#workspaces button.active {
+    color: #ffffff;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
