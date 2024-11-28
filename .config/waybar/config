@@ -6,15 +6,9 @@
 
     "hyprland/workspaces": {
         "disable-scroll": true,
-        "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-        },
     },
 
     "clock": {
-        "format": "{:%a, %d %b, %I:%M %p}"
+        "format": "{:%a, %D, %H:%M}"
     },
 }
