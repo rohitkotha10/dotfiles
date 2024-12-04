@@ -1,13 +1,13 @@
 -- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
+      { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
+      { out, 'WarningMsg' },
+      { '\nPress any key to exit...' },
     }, true, {})
     vim.fn.getchar()
     os.exit(1)
@@ -18,25 +18,25 @@ vim.opt.rtp:prepend(lazypath)
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.g.mapleader = ' '
+vim.g.maplocalleader = '\\'
 
 -- Setup lazy.nvim
-require("lazy").setup({
+require('lazy').setup({
   spec = {
     -- import your plugins
     {
-      "catppuccin/nvim",
-      name = "catppuccin",
+      'catppuccin/nvim',
+      name = 'catppuccin',
       lazy = false, -- make sure we load this during startup if it is your main colorscheme
       priority = 1000, -- make sure to load this before all the other start plugins
       config = function()
         -- load the colorscheme here
-        vim.cmd.colorscheme "catppuccin-mocha"
+        vim.cmd.colorscheme 'catppuccin-mocha'
       end
     },
     {
-      "nvim-telescope/telescope.nvim", 
+      'nvim-telescope/telescope.nvim',
       tag = '0.1.8',
       dependencies = { 'nvim-lua/plenary.nvim' },
       config = function()
@@ -49,10 +49,24 @@ require("lazy").setup({
       end
     },
     {
-      "nvim-treesitter/nvim-treesitter",
-      build = ":TSUpdate",
+      'nvim-telescope/telescope-ui-select.nvim',
+      config = function()
+        require("telescope").setup ({
+          extensions = {
+            ["ui-select"] = {
+              require("telescope.themes").get_dropdown {
+              }
+            }
+          }
+        })
+        require("telescope").load_extension("ui-select")
+      end
+    },
+    {
+      'nvim-treesitter/nvim-treesitter',
+      build = ':TSUpdate',
       config = function ()
-        local config = require("nvim-treesitter.configs")
+        local config = require('nvim-treesitter.configs')
         config.setup({
           auto_install = true,
           highlight = { enable = true },
@@ -61,20 +75,48 @@ require("lazy").setup({
       end
     },
     {
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v3.x",
+      'nvim-neo-tree/neo-tree.nvim',
+      branch = 'v3.x',
       dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-        "MunifTanjim/nui.nvim",
-        "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+        'nvim-lua/plenary.nvim',
+        'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+        'MunifTanjim/nui.nvim',
+        '3rd/image.nvim', -- Optional image support in preview window: See `# Preview Mode` for more information
       }
     },
     {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
-      config = function() 
-        require('lualine').setup({options = { theme = "dracula" }})
+      config = function()
+        require('lualine').setup({options = { theme = 'dracula' }})
+      end
+    },
+    {
+      'williamboman/mason.nvim',
+      lazy = false,
+      config = function()
+        require('mason').setup()
+      end
+    },
+    {
+      'williamboman/mason-lspconfig.nvim',
+      lazy = false,
+      opts = {
+        auto_install = true,
+      },
+    },
+    {
+      'neovim/nvim-lspconfig',
+      lazy = false,
+      config = function()
+        local lspconfig = require('lspconfig')
+        lspconfig.lua_ls.setup({})
+        lspconfig.ts_ls.setup({})
+        lspconfig.clangd.setup({})
+	      vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
+        vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+        vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
       end
     }
   },
