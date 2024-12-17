@@ -12,6 +12,6 @@
         "format": "{:%a, %D, %H:%M}"
     },
     "battery": {
-      "format": "{capacity}% "
+      "format": "{capacity}%"
     }
 }
